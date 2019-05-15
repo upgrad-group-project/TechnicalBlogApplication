@@ -1,4 +1,4 @@
-package technicalblog;
+package technicalblog.repository;
 
 import com.upgrad.quora.service.entity.AnswerEntity;
 import org.springframework.stereotype.Repository;
