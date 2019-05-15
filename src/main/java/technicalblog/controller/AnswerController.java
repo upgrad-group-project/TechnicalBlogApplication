@@ -1,7 +1,7 @@
-package com.upgrad.quora.api.controller;
+package technicalblog.controller;
 
-import com.upgrad.quora.api.model.*;
-import com.upgrad.quora.service.business.AnswerBusinessService;
+import technicalblog.*;
+/*import com.upgrad.quora.service.business.AnswerBusinessService;
 import com.upgrad.quora.service.business.QuestionBusinessService;
 import com.upgrad.quora.service.business.UserAuthBusinessService;
 import com.upgrad.quora.service.entity.AnswerEntity;
@@ -10,7 +10,7 @@ import com.upgrad.quora.service.entity.UserAuthEntity;
 import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.AnswerNotFoundException;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
-import com.upgrad.quora.service.exception.InvalidQuestionException;
+import com.upgrad.quora.service.exception.InvalidQuestionException;*/
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ public class AnswerController {
     private AnswerBusinessService answerBusinessService;
 
     @Autowired
-    private UserAuthBusinessService userAuthBusinessService;
+    private UserService userAuthBusinessService;
 
     @Autowired
     private QuestionBusinessService questionBusinessService;
@@ -40,9 +40,9 @@ public class AnswerController {
             throws AuthorizationFailedException, InvalidQuestionException {
 
         final UserAuthEntity userAuthEntity = userAuthBusinessService.getUser(authorization);
-        QuestionEntity questionEntity = questionBusinessService.validateQuestion(questionId);
+        Question questionEntity = questionBusinessService.validateQuestion(questionId);
 
-        UserEntity userEntity = userAuthEntity.getUser();
+        User userEntity = userAuthEntity.getUser();
 
         AnswerEntity answerEntity = new AnswerEntity();
         answerEntity.setUuid(UUID.randomUUID().toString());
@@ -80,8 +80,8 @@ public class AnswerController {
     public ResponseEntity<AnswerDeleteResponse> deleteAnswer(@PathVariable("answerId") final String answerId, @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException, AnswerNotFoundException {
 
-        UserAuthEntity userAuthEntity = userAuthBusinessService.getUser(authorization);
-        UserEntity userEntity= userAuthEntity.getUser();
+        UserProfile userAuthEntity = userAuthBusinessService.getUser(authorization);
+        User userEntity= userAuthEntity.getUser();
         AnswerEntity answerEntity = answerBusinessService.getAnswerFromId(answerId);
         AnswerEntity checkedAnswer;
 
@@ -103,8 +103,8 @@ public class AnswerController {
     public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersToQuestion(@PathVariable("questionId") final String questionId, @RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException, InvalidQuestionException {
 
-        UserAuthEntity userAuthEntity = userAuthBusinessService.getUser(authorization);
-        QuestionEntity questionEntity = questionBusinessService.validateQuestion(questionId);
+        UserProfile userAuthEntity = userAuthBusinessService.getUser(authorization);
+        Question questionEntity = questionBusinessService.validateQuestion(questionId);
 
 
         ArrayList<AnswerDetailsResponse> list = null;
