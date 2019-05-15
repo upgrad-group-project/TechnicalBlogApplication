@@ -1,4 +1,4 @@
-package com.upgrad.quora.service.entity;
+package technicalblog.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
